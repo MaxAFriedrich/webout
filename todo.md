@@ -2,7 +2,6 @@
 - md syntax removal py
 - tts
 - py code parser
-- mutliple md files
 - pdf builder
 - audio player in css
 - customise formating
