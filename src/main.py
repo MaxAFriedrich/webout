@@ -14,6 +14,14 @@ def clean():
 
 def copy_assets():
     shutil.copytree(STATIC_DIR, OUT_DIR)
+    # Get the list of files in the source folder
+    src_static="./static" 
+    files = os.listdir(src_static)
+    # Loop through the files and copy them to the destination folder
+    for file in files:
+        src_file = os.path.join(src_static, file)
+        dst_file = os.path.join(OUT_DIR, file)
+        shutil.copy(src_file, dst_file)
 
 
 def md_html(file):
