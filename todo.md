@@ -1,0 +1,10 @@
+- fix css - merge with tuftecss?
+- graphs class py
+- md syntax removal py
+- tts
+- py code parser
+- mutliple md files
+- pdf builder
+- audio player in css
+- customise formating
+- local server
