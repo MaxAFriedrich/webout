@@ -94,6 +94,11 @@ $$y=5$$
 $$x = 5$$
 $$z = x+y$$
 
+But this is great![^mathNote]
+
+[^mathNote]: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec scelerisque nisi libero, quis mollis leo fermentum venenatis. Donec luctus lectus quis lacus facilisis ullamcorper. Curabitur laoreet leo sodales justo dignissim, sit amet accumsan turpis feugiat. Donec varius iaculis nulla, at vulputate arcu hendrerit sed. Phasellus consequat lacinia orci at scelerisque. Phasellus bibendum justo nisi, ac congue lectus malesuada nec. Integer et nisi turpis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et venenatis sem. Integer metus orci, euismod at laoreet eu, gravida eget nulla. Quisque vel metus at lacus bibendum posuere quis nec massa. 
+
+
 ### Sparklines
 
 ### Charts

@@ -1,4 +1,3 @@
-- fix css - merge with tuftecss?
 - graphs class py
 - md syntax removal py
 - tts
