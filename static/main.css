@@ -364,6 +364,108 @@ label.margin-toggle:not(.sidenote-number) {
 .date{
   display: inline;
 }
+
+/* Hide default audio controls */
+audio::-webkit-media-controls {
+  display: none !important;
+}
+
+/* Position speaker icon */
+.speaker-icon {
+  font-size: 42px;
+  cursor: pointer;
+  margin:auto;
+  display:block;
+  width:fit-content;
+}
+
+/* Position audio player */
+.audio-player {
+
+  background-color: #fff;
+  border: 1px solid #ccc;
+  z-index: 9999;
+}
+
+/* Position audio controls */
+.audio-controls {
+  width: 100%;
+  text-align: center;
+  z-index: 9999;
+  display:none;
+}
+
+#speed_label{
+  font-size: 24px;
+  display:inline-block;
+  margin-right:0.7rem;
+}
+
+.speed_wrapper, .progress-wrapper{
+  display:flex;
+  flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.audio-speed-control {
+  width: 90%;
+  height: 5px;
+  background: #eee;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.audio-speed-control:hover {
+  opacity: 1;
+}
+
+.audio-speed-control::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #333;
+  cursor: pointer;
+}
+
+/* Show audio player when speaker icon is clicked */
+.audio-wrapper.show-audio .audio-player {
+  display: block;
+}
+/* Position progress bar container */
+.progress-bar-container {
+  width: 85%;
+  height: 5px;
+  background-color: #eee;
+  margin-top: 5px;
+  position:relative;
+ 
+}
+
+/* Style progress bar */
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background-color: #333;
+  
+}
+
+.progress-wrapper button{
+  outline:none;
+  border:none;
+  background:none;
+  color:inherit;
+  font-size:24px;
+}
+
 @media (max-width: 760px) {
   body {
     width: 84%;

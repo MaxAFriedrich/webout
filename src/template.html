@@ -25,7 +25,7 @@
   $header-includes$
   $endfor$
   <link href="prism.css" rel="stylesheet" />
-    <link href="main.css" rel="stylesheet"/>
+  <link href="main.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -55,6 +55,24 @@
     <p class="date">$date$</p>
     $endif$
     $endif$
+      <style id="audioCSS"></style>
+    <div class="audio-wrapper">
+      <i class="fa fa-volume-up speaker-icon">🎧</i>
+      <audio id="myAudio" class="audio-player" preload="metadata">
+        <source src="$filename_base$.mp3" type="audio/mpeg">
+      </audio>
+      <div class="audio-controls">
+        <div class="speed_wrapper"> <span id="speed_label">⏲ </span><input type="range" class="audio-speed-control"
+            min="0.5" max="2" value="1" step="0.25"></div>
+        <div class="progress-wrapper">
+          <button class="rewind-button">⏮</button>
+          <div class="progress-bar-container">
+            <div class="progress-bar"></div>
+          </div>
+          <button class="fast-forward-button">⏭</button>
+        </div>
+      </div>
+    </div>
   </header>
   <article>
     $body$
@@ -63,11 +81,7 @@
     $endfor$
   </article>
   <script src="prism.js"></script>
-  <script>
-    window.onload = function () {
-      Prism.highlightAll();
-    }
-  </script>
+  <script src="main.js"></script>
 </body>
 
 </html>

@@ -1,8 +1,6 @@
 - graphs class py
 - md syntax removal py
-- tts
 - py code parser
 - pdf builder
-- audio player in css
 - customise formating
 - local server
