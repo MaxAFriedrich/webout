@@ -130,6 +130,12 @@ function textFormat() {
     body.style.color = foregroundColor;
     body.style.lineHeight = lineSpacing;
     body.style.fontFamily = selectedFontStyle;
+    document.getElementById("formatCSS").innerText = `p,
+dl,
+ol,
+ul {
+  line-height: unset;
+}`
   };
 
   // When the user clicks on reset changes, reset the text style to default
@@ -147,6 +153,12 @@ function textFormat() {
     document.getElementById("foregroundColor").value = "#dddddd";
     document.getElementById("lineSpacing").value = 1;
     document.getElementById("fontStyle").value = `sans-serif`;
+    document.getElementById("formatCSS").innerText = `p,
+dl,
+ol,
+ul {
+  line-height: 2rem;
+}`
   };
 }
 window.onload = function () {

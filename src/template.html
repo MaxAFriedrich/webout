@@ -59,7 +59,8 @@
     <p class="date">$date$</p>
     $endif$
     $endif$
-    <style id="audioCSS"></style>
+            <style id="audioCSS"></style>
+            <style id="formatCSS"></style>
       <br>
     <button id="openModal">Change Theme</button>
 
@@ -75,7 +76,7 @@
           <input type="color" id="foregroundColor" name="foregroundColor" value="#000000"><br><br>
 
           <label for="lineSpacing">Line spacing:</label>
-          <input type="range" id="lineSpacing" name="lineSpacing" min="1" max="2" step="0.1" value="1"><br><br>
+          <input type="range" id="lineSpacing" name="lineSpacing" min="1" max="5" step="0.5" value="1"><br><br>
 
           <label for="fontStyle">Font style:</label>
           <select id="fontStyle" name="fontStyle">
@@ -91,7 +92,7 @@
     <div class="audio-wrapper">
       <button class="fa fa-volume-up speaker-icon">Listen</button>
       <audio id="myAudio" class="audio-player" preload="metadata">
-        <source src="main.mp3" type="audio/mpeg">
+        <source src="$filename_base$.mp3" type="audio/mpeg">
       </audio>
       <div class="audio-controls">
         <div class="speed_wrapper"> <span id="speed_label">⏲ </span><input type="range" class="audio-speed-control"
