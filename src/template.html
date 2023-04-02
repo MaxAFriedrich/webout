@@ -59,11 +59,39 @@
     <p class="date">$date$</p>
     $endif$
     $endif$
-      <style id="audioCSS"></style>
+    <style id="audioCSS"></style>
+      <br>
+    <button id="openModal">Change Theme</button>
+
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Change your theme</h2>
+        <form>
+          <label for="backgroundColor">Background color:</label>
+          <input type="color" id="backgroundColor" name="backgroundColor" value="#ffffff"><br><br>
+
+          <label for="foregroundColor">Foreground color:</label>
+          <input type="color" id="foregroundColor" name="foregroundColor" value="#000000"><br><br>
+
+          <label for="lineSpacing">Line spacing:</label>
+          <input type="range" id="lineSpacing" name="lineSpacing" min="1" max="2" step="0.1" value="1"><br><br>
+
+          <label for="fontStyle">Font style:</label>
+          <select id="fontStyle" name="fontStyle">
+            <option value="sans-serif">Sans-serif</option>
+            <option value="serif">Serif</option>
+          </select><br><br>
+
+          <button type="button" id="applyChanges">Apply changes</button>
+          <button type="button" id="resetChanges">Reset to default</button>
+        </form>
+      </div>
+    </div>
     <div class="audio-wrapper">
-      <i class="fa fa-volume-up speaker-icon">🎧</i>
+      <button class="fa fa-volume-up speaker-icon">Listen</button>
       <audio id="myAudio" class="audio-player" preload="metadata">
-        <source src="$filename_base$.mp3" type="audio/mpeg">
+        <source src="main.mp3" type="audio/mpeg">
       </audio>
       <div class="audio-controls">
         <div class="speed_wrapper"> <span id="speed_label">⏲ </span><input type="range" class="audio-speed-control"
@@ -77,7 +105,7 @@
         </div>
       </div>
     </div>
-  </header>
+   </header>
   <article>
     $body$
     $for(include-after)$

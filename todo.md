@@ -2,5 +2,5 @@
 - md syntax removal py
 - py code parser
 - pdf builder
-- customise formating
 - local server
+- fix highlight html/md

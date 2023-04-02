@@ -30,9 +30,18 @@ function audioPlayer() {
   padding:1rem;
   border-radius:0.3rem;
   z-index:1000;
+display:block;
 }
 .audio-controls{
   display:block !important;
+}
+.speaker-icon {
+  font-size: 42px;
+  margin:auto;
+  background:none;
+  color:inherit;
+  padding:0;
+  height:42px;
 }
 `;
       }
@@ -75,7 +84,73 @@ function audioPlayer() {
   });
 }
 
+function textFormat() {
+  // Get the modal
+  var modal = document.getElementById("myModal");
+
+  // Get the button that opens the modal
+  var btn = document.getElementById("openModal");
+
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks on the button, open the modal
+  btn.onclick = function () {
+    modal.style.display = "block";
+  };
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function () {
+    modal.style.display = "none";
+  };
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
+
+  // When the user clicks on apply changes, update the text style
+  document.getElementById("applyChanges").onclick = function () {
+    var body = document.getElementsByTagName("body")[0];
+    var backgroundColor = document.getElementById("backgroundColor").value;
+    var foregroundColor = document.getElementById("foregroundColor").value;
+    var lineSpacing = document.getElementById("lineSpacing").value;
+    var fontStyle = document.getElementById("fontStyle").value;
+    // Get the font style selected
+    if (fontStyle=="sans-serif"){
+      selectedFontStyle = `"Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif`;
+    }else{
+      selectedFontStyle = `Georgia, 'Times New Roman', Times, serif`
+    }
+
+    // Update the body style
+    body.style.backgroundColor = backgroundColor;
+    body.style.color = foregroundColor;
+    body.style.lineHeight = lineSpacing;
+    body.style.fontFamily = selectedFontStyle;
+  };
+
+  // When the user clicks on reset changes, reset the text style to default
+  document.getElementById("resetChanges").onclick = function () {
+    var body = document.getElementsByTagName("body")[0];
+
+    // Reset the body style to default
+    body.style.backgroundColor = "";
+    body.style.color = "";
+    body.style.lineHeight = "";
+    body.style.fontFamily = "";
+
+    // Reset the form values to default
+    document.getElementById("backgroundColor").value = "#151515";
+    document.getElementById("foregroundColor").value = "#dddddd";
+    document.getElementById("lineSpacing").value = 1;
+    document.getElementById("fontStyle").value = `sans-serif`;
+  };
+}
 window.onload = function () {
   Prism.highlightAll();
   audioPlayer();
+  textFormat();
 };
