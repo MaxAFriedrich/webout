@@ -588,3 +588,16 @@ audio::-webkit-media-controls {
     display: inline;
   }
 }
+@media print{
+body {
+	font-family: Georgia, "Times New Roman", Times, serif;
+  color: #151515;
+background-color: #ddd;
+  }
+  .audio-wrapper, #myModal, #openModal{
+    display:none;
+  }
+  table, p{
+    break-inside: avoid;
+  }
+}
