@@ -1,6 +1,3 @@
-- graphs class py
-- md syntax removal py
-- py code parser
 - pdf builder
 - local server
-- fix highlight html/md
+- fix visual bugs in theme menu and sound wrapper
