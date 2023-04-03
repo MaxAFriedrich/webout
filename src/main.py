@@ -2,6 +2,7 @@ import os
 import shutil
 from concurrent.futures import ThreadPoolExecutor
 
+from pyrun import eval_and_replace_markdown_code_blocks as py_md
 MD_DIR = "../md"
 OUT_DIR = "../out"
 STATIC_DIR = "../static"
@@ -26,12 +27,13 @@ def copy_assets():
 
 def md_html(file):
     if file.endswith(".md"):
-        input_file = os.path.join(MD_DIR, file)
+        input_file = os.path.join(MD_DIR,file)
         md_out_file = os.path.join(OUT_DIR, file)
         filename_base = os.path.splitext(file)[0]
         output_file = os.path.join(OUT_DIR, filename_base+ ".html")
+        py_md(input_file, md_out_file)
         os.system(
-            f"npx -p @mermaid-js/mermaid-cli mmdc -i {input_file} -o {md_out_file} --cssFile mermaid.css  --outputFormat=svg -t dark -b transparent"
+            f"npx -p @mermaid-js/mermaid-cli mmdc -i {md_out_file} -o {md_out_file} --cssFile mermaid.css  --outputFormat=svg -t dark -b transparent"
         )
         os.system(
             f"pandoc {md_out_file} -o {output_file} --mathjax --template template.html --no-highlight --filter pandoc-sidenote --variable=filename_base:{filename_base}"
@@ -94,16 +96,22 @@ def md_mp3(
             out.write(response.audio_content)
             print(f'Audio content written to file "{file_path}"')
 
-def main():
+
+def main(sound=True):
     md_files = os.listdir(MD_DIR)
     with ThreadPoolExecutor(max_workers=4) as executor:
         executor.map(md_html, md_files)
-    for file in md_files:
-        md_mp3(file) 
+    if sound:
+        for file in md_files:
+            md_mp3(file) 
 
 
 
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-S", "--no-sound", help="Turn off sound", action="store_false")
+    args = parser.parse_args()
     clean()
     copy_assets()
-    main()
+    main(sound=args.no_sound)
