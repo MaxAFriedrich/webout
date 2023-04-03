@@ -1,11 +1,26 @@
-import plotly.graph_objs as go
-from plotly.subplots import make_subplots
 from os import path
 
+import plotly.graph_objs as go
+from plotly.subplots import make_subplots
+
+
 class Chart:
-    def __init__(self):
+    default_color = "#ddd"
+    default_data_color = "#ddd"
+    default_plot_color = "#222"
+    default_background_color = "rgba(0,0,0,0)"
+    default_font = "sans-serif"
+    is_pdf = False
+
+    def __init__(self, is_pdf):
         self.data = None
         self.fig = None
+        self.is_pdf = is_pdf
+        if self.is_pdf:
+            self.default_font = "serif"
+            self.default_color = "#222"
+            self.default_data_color = "#222"
+            self.default_plot_color = "#ddd"
 
     def set_data(self, data):
         self.data = data
@@ -18,17 +33,20 @@ class Chart:
         self.fig.write_image(path)
         return self
 
-    def md(self, file, out_format="<img src='{path}' alt='{alt}'>",alt="Chart"):
-        out_file=path.join("../out/",file)
+    def md(self, file, out_format="<img src='{path}' alt='{alt}'>", alt="Chart"):
+        if self.is_pdf:
+            out_file = path.join("../build/", file)
+        else:
+            out_file = path.join("../out/", file)
         self.get_svg(out_file)
-        return out_format.format(path=file,alt=alt)
+        return out_format.format(path=file, alt=alt)
 
     def line(
         self,
-        color="#ddd",
-        plot_color="#222",
-        data_color="#ddd",
-        background_color="rgba(0,0,0,0)",
+        color=None,
+        plot_color=None,
+        data_color=None,
+        background_color=None,
         title="",
         annotations=[],
         x_title="",
@@ -36,6 +54,16 @@ class Chart:
     ):
         if self.data is None:
             raise ValueError("No data provided")
+
+        if color is None:
+            color = self.default_color
+        if plot_color is None:
+            plot_color = self.default_plot_color
+        if data_color is None:
+            data_color = self.default_data_color
+        if background_color is None:
+            background_color = self.default_background_color
+
         fig = go.Figure()
         fig.add_trace(
             go.Scatter(
@@ -70,7 +98,7 @@ class Chart:
             margin=dict(r=20),
             annotations=annotations,
             title=title,
-            font=dict(family="sans-serif", color=color),
+            font=dict(family=self.default_font, color=color),
             plot_bgcolor=plot_color,
             paper_bgcolor=background_color,
         )
@@ -78,11 +106,12 @@ class Chart:
         return self
 
     def scatter(
+
         self,
-        color="#ddd",
-        plot_color="#222",
-        data_color="#ddd",
-        background_color="rgba(0,0,0,0)",
+        color=None,
+        plot_color=None,
+        data_color=None,
+        background_color=None,
         title="",
         annotations=[],
         x_title="",
@@ -91,6 +120,14 @@ class Chart:
         if self.data is None:
             raise ValueError("No data provided")
 
+        if color is None:
+            color = self.default_color
+        if plot_color is None:
+            plot_color = self.default_plot_color
+        if data_color is None:
+            data_color = self.default_data_color
+        if background_color is None:
+            background_color = self.default_background_color
         fig = go.Figure()
         fig.add_trace(
             go.Scatter(
@@ -124,7 +161,7 @@ class Chart:
             margin=dict(r=20),
             annotations=annotations,
             title=title,
-            font=dict(family="sans-serif", color=color),
+            font=dict(family=self.default_font, color=color),
             plot_bgcolor=plot_color,
             paper_bgcolor=background_color,
         )
@@ -132,11 +169,12 @@ class Chart:
         return self
 
     def bar(
+
         self,
-        color="#ddd",
-        plot_color="#222",
-        data_color="#ddd",
-        background_color="rgba(0,0,0,0)",
+        color=None,
+        plot_color=None,
+        data_color=None,
+        background_color=None,
         title="",
         annotations=[],
         x_title="",
@@ -144,6 +182,15 @@ class Chart:
     ):
         if self.data is None:
             raise ValueError("No data provided")
+        if color is None:
+            color = self.default_color
+        if plot_color is None:
+            plot_color = self.default_plot_color
+        if data_color is None:
+            data_color = self.default_data_color
+        if background_color is None:
+            background_color = self.default_background_color
+
 
         fig = make_subplots(rows=1, cols=1)
 
@@ -172,7 +219,7 @@ class Chart:
             ),
             annotations=annotations,
             title=title,
-            font=dict(family="sans-serif", color=color),
+            font=dict(family=self.default_font, color=color),
             plot_bgcolor=plot_color,
             paper_bgcolor=background_color,
         )
@@ -181,15 +228,19 @@ class Chart:
 
     def spark(
         self,
-        data_color="#ddd",
-        background_color="rgba(0,0,0,0)",
+        data_color=None,
+        background_color=None,
         start_dot=False,
         end_dot=True,
         height=30,
-        width=100
+        width=100,
     ):
         if self.data is None:
             raise ValueError("No data provided")
+        if data_color is None:
+            data_color = self.default_data_color
+        if background_color is None:
+            background_color = self.default_background_color
         fig = go.Figure()
         fig.add_trace(
             go.Scatter(
@@ -238,55 +289,59 @@ class Chart:
         self.fig = fig
         return self
 
+
 if __name__ == "__main__":
-        
-    
+
     import random
-    
-    
+
     def line():
         data = {}
         data["y"] = [random.randint(0, 3) for _ in range(11)]
         data["x"] = list(range(1967, 1978))
-        linechart = Chart()
+        linechart = Chart(False)
         linechart.set_data(data)
         linechart.line(
-            title="Test Line", x_title="years", y_title="Randint", background_color="#000"
+            title="Test Line",
+            x_title="years",
+            y_title="Randint",
+            background_color="#000",
         )
         linechart.get_svg("linechart.svg")
-    
-    
+
     def scatter():
         data = {}
         data["y"] = [random.randint(100, 300) for _ in range(11)]
         data["x"] = [random.randint(1, 64) for _ in range(11)]
-        plot = Chart()
+        plot = Chart(False)
         plot.set_data(data)
         plot.scatter(
-            title="Test Line", x_title="years", y_title="Randint", background_color="#000"
+            title="Test Line",
+            x_title="years",
+            y_title="Randint",
+            background_color="#000",
         )
         plot.get_svg("scatterplot.svg")
-    
-    
+
     def bar():
         data = {}
         data["y"] = [random.randint(100, 300) for _ in range(11)]
         data["x"] = [random.randint(1, 64) for _ in range(11)]
-        plot = Chart()
+        plot = Chart(False)
         plot.set_data(data)
         plot.bar(
-            title="Test Line", x_title="years", y_title="Randint", background_color="#000"
+            title="Test Line",
+            x_title="years",
+            y_title="Randint",
+            background_color="#000",
         )
         plot.get_svg("barchart.svg")
-    
-    
+
     def spark():
         data = {}
         data["y"] = [random.randint(0, 10) for _ in range(100)]
         data["x"] = list(range(0, 100))
-        Chart().set_data(data).spark(
-             background_color="#000",start_dot=True,width=300
+        Chart(False).set_data(data).spark(
+            background_color="#000", start_dot=True, width=300
         ).md("spark.svg")
-    
-    
+
     spark()

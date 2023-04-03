@@ -2,7 +2,7 @@ import io
 import sys
 import re
 
-def eval_and_replace_markdown_code_blocks(file_path, output_path):
+def eval_and_replace_markdown_code_blocks(file_path, output_path, is_pdf=False):
     # Read the file contents
     with open(file_path, 'r') as f:
         file_contents = f.read()
