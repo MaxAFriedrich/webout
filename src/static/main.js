@@ -119,10 +119,10 @@ function textFormat() {
     var lineSpacing = document.getElementById("lineSpacing").value;
     var fontStyle = document.getElementById("fontStyle").value;
     // Get the font style selected
-    if (fontStyle=="sans-serif"){
+    if (fontStyle == "sans-serif") {
       selectedFontStyle = `"Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif`;
-    }else{
-      selectedFontStyle = `Georgia, 'Times New Roman', Times, serif`
+    } else {
+      selectedFontStyle = `Georgia, 'Times New Roman', Times, serif`;
     }
 
     // Update the body style
@@ -135,7 +135,7 @@ dl,
 ol,
 ul {
   line-height: unset;
-}`
+}`;
   };
 
   // When the user clicks on reset changes, reset the text style to default
@@ -158,11 +158,89 @@ dl,
 ol,
 ul {
   line-height: 2rem;
-}`
+}`;
   };
 }
+
+function clearFields() {
+  // Get all form fields
+  const formFields = document.querySelectorAll("input[type='text'], textarea");
+
+  // Loop through each form field and set its value to an empty string
+  formFields.forEach((field) => {
+    field.value = "";
+  });
+}
+
+function dragNDrop() {
+  document.addEventListener("dragstart", function (event) {
+    dragP = event.target;
+    event.target.style.opacity = "0.4";
+  });
+
+  document.addEventListener("dragend", function (event) {
+    event.target.style.opacity = "1";
+  });
+
+  document.addEventListener("dragover", function (event) {
+    event.preventDefault();
+  });
+
+  document.addEventListener("dragleave", function (event) {
+    if (event.target.className == "droptarget") {
+      event.target.style.border = "";
+    }
+  });
+
+  document.addEventListener("drop", function (event) {
+    event.preventDefault();
+    let targetDiv = event.target;
+    if (
+      targetDiv.className == "droptarget" ||
+      targetDiv.className == "container"
+    ) {
+      dragP.style.backgroundColor = "#222";
+      targetDiv.appendChild(dragP);
+      checkAns();
+    }
+  });
+
+  function checkAns() {
+    const droptargets = document.querySelectorAll(".droptarget");
+
+    droptargets.forEach((droptarget) => {
+      const correctAnswers = droptarget.getAttribute("data-correct");
+      const dragtarget = droptarget.querySelector(".dragtarget");
+      if (dragtarget == null) {
+        return;
+      }
+
+      const userAnswers = dragtarget.getAttribute("data-correct");
+      if (correctAnswers != userAnswers) {
+        dragtarget.style.backgroundColor = "#300";
+      } else {
+        dragtarget.style.backgroundColor = "#030";
+      }
+    });
+  }
+  function shuffleDivs() {
+    var containers = document.querySelectorAll(".container");
+    containers.forEach(function (container) {
+      var divs = container.children;
+      var frag = document.createDocumentFragment();
+      while (divs.length) {
+        frag.appendChild(divs[Math.floor(Math.random() * divs.length)]);
+      }
+      container.appendChild(frag);
+    });
+  }
+  shuffleDivs();
+}
+
 window.onload = function () {
   Prism.highlightAll();
   audioPlayer();
   textFormat();
+  clearFields();
+  dragNDrop();
 };
