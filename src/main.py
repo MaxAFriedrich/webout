@@ -43,8 +43,11 @@ def md_html(file):
 
 
 # def md_mp3(file):
-from google.cloud import texttospeech
-
+try:
+    from google.cloud import texttospeech
+    gotTTS = True
+except ImportError:
+    gotTTS = False
 import undown
 
 
@@ -56,6 +59,9 @@ def md_mp3(
     speed=1.0,
     pitch=1.0,
 ):
+    if not gotTTS:
+        return
+
     if file.endswith(".md"):
 
         with open(os.path.join(MD_DIR, file), "r") as f:
@@ -136,8 +142,8 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-S", "--no-sound", help="Turn off sound", action="store_false")
+    parser.add_argument("-s", "-sound", help="Turn off sound", action="store_true")
     args = parser.parse_args()
     clean()
     copy_assets()
-    main(sound=args.no_sound)
+    main(sound=args.sound)
