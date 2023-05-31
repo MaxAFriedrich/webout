@@ -1,5 +1,7 @@
+import json
 import os
 import shutil
+import hashlib
 from concurrent.futures import ThreadPoolExecutor
 
 from pyrun import eval_and_replace_markdown_code_blocks as py_md
@@ -8,14 +10,60 @@ MD_DIR = "../md"
 OUT_DIR = "../out"
 STATIC_DIR = "../static"
 
+class FileHash:
+    hashes = {}
+
+    def __init__(self) -> None:
+        pass
+
+    @staticmethod
+    def import_hashes():
+        try:
+            with open("../.src_hash", "r") as file:
+                FileHash.hashes = json.load(file)
+        except FileNotFoundError:
+            print("No .src_hash file found, starting from scratch.")
+
+    @staticmethod
+    def export_hashes():
+        with open("../.src_hash", "w") as file:
+            json.dump(FileHash.hashes, file)
+
+    @staticmethod
+    def add_hash(file_path: str):
+        sha256_hash = hashlib.sha256()
+        with open(file_path,"rb") as f:
+            for byte_block in iter(lambda: f.read(4096),b""):
+                sha256_hash.update(byte_block)
+        FileHash.hashes[file_path] = sha256_hash.hexdigest()
+
+    @staticmethod
+    def is_hashed(file_path: str) -> bool:
+        if file_path in FileHash.hashes:
+            sha256_hash = hashlib.sha256()
+            with open(file_path,"rb") as f:
+                for byte_block in iter(lambda: f.read(4096),b""):
+                    sha256_hash.update(byte_block)
+            return sha256_hash.hexdigest() == FileHash.hashes[file_path]
+        else:
+            FileHash.add_hash(file_path)
+            return False
 
 def clean():
-    if os.path.exists(OUT_DIR):
-        shutil.rmtree(OUT_DIR)
+    pass
 
 
 def copy_assets():
-    shutil.copytree(STATIC_DIR, OUT_DIR)
+    if not os.path.exists(OUT_DIR):
+        os.makedirs(OUT_DIR)
+    
+    for item in os.listdir(STATIC_DIR):
+        s = os.path.join(STATIC_DIR, item)
+        d = os.path.join(OUT_DIR, item)
+        if os.path.isdir(s):
+            shutil.copytree(s, d, symlinks=True)
+        else:
+            shutil.copy2(s, d)
     # Get the list of files in the source folder
     src_static = "./static"
     files = os.listdir(src_static)
@@ -29,9 +77,11 @@ def copy_assets():
 def md_html(file):
     if file.endswith(".md"):
         input_file = os.path.join(MD_DIR, file)
-        md_out_file = os.path.join(OUT_DIR, file)
+        if FileHash.is_hashed(input_file):
+            return
         filename_base = os.path.splitext(file)[0]
         output_file = os.path.join(OUT_DIR, filename_base + ".html")
+        md_out_file = os.path.join(OUT_DIR, file)
         py_md(input_file, md_out_file)
         os.system(
             f"npx -p @mermaid-js/mermaid-cli mmdc -i {md_out_file} -o {md_out_file} --cssFile mermaid.css  --outputFormat=svg -t dark -b transparent"
@@ -45,6 +95,7 @@ def md_html(file):
 # def md_mp3(file):
 try:
     from google.cloud import texttospeech
+
     gotTTS = True
 except ImportError:
     gotTTS = False
@@ -63,7 +114,6 @@ def md_mp3(
         return
 
     if file.endswith(".md"):
-
         with open(os.path.join(MD_DIR, file), "r") as f:
             text = undown.md_to_text(f.read())
         file_path = os.path.join(OUT_DIR, os.path.splitext(file)[0] + ".mp3")
@@ -128,7 +178,7 @@ def make_dirs(dir_path):
 
 
 def main(sound=True):
-    md_files, _ = get_dir(MD_DIR) 
+    md_files, _ = get_dir(MD_DIR)
     make_dirs(MD_DIR)
     print(md_files)
     with ThreadPoolExecutor(max_workers=4) as executor:
@@ -140,10 +190,11 @@ def main(sound=True):
 
 if __name__ == "__main__":
     import argparse
-
+    FileHash.import_hashes()
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "-sound", help="Turn off sound", action="store_true")
+    parser.add_argument("-s", "--sound", help="Turn off sound", action="store_true")
     args = parser.parse_args()
     clean()
     copy_assets()
     main(sound=args.sound)
+    FileHash.export_hashes()

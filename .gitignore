@@ -2,3 +2,4 @@ out/*
 src/__pycache__/*
 md/*
 static/*
+.src_hash
