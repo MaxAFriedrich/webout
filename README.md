@@ -19,6 +19,7 @@ The following system packages:
 - pandoc
 - python
 - nodejs
+- [pandoc-sidenote](https://github.com/jez/pandoc-sidenote)
 
 ## How to Use
 
